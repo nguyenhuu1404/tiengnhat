@@ -14,6 +14,7 @@ use App\User;
 
 class PackageController extends Controller
 {
+    const ROLE_ADMIN = 1;
     public function combo($packageId){
         $package = Package::where('id', $packageId)->first()->toArray();
         $package['isBuy'] = false;
@@ -29,7 +30,10 @@ class PackageController extends Controller
         return view('frontend.packages.combo', $data);
     }
     public function checkPaymentByPackage($userId, $packageId){
-
+        $user = Auth::user();
+        if ($user->role_id === self::ROLE_ADMIN) {
+            return true;
+        }
         $checkPayment = Payment::where(['user_id' => $userId, 'package_id' =>  $packageId, 'status' => 1])->get()->count();
         if($checkPayment > 0){
             return true;

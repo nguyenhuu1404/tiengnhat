@@ -98,7 +98,7 @@
                                 <script src="{{ asset('js/videojs-hlsjs-plugin.js') }}"></script>
                                 <script src="/videojs-quality-picker/dist/vjs-quality-picker.js"></script>
 
-                                <video id="my-video" class="video-js iframe w-100" controls preload="auto" data-setup='{ "playbackRates": [0.5, 0.75, 1, 1.5, 2] }'  autoplay>
+                                <video id="my-video" class="video-js iframe w-100" controls preload="auto" data-setup='{ "playbackRates": [0.5, 0.75, 1, 1.25, 1.5, 2] }'  autoplay>
                                 <source src="/hls-{{$curentLesson['video']}}-{{$curentLesson['video']}}.mp4-<?php echo ($t = time())?>-<?php $video = $curentLesson['video']; echo md5("tk.$t.$video.$video.mp4")?>-playlist.m3u8">
                                 <p class="vjs-no-js">
                                     To view this video please enable JavaScript, and consider upgrading to a web browser that

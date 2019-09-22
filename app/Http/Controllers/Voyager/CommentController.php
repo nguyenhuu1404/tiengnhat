@@ -8,10 +8,6 @@ use App\Comment;
 
 class CommentController extends Controller
 {
-    public function index()
-    {
-        
-    }
     public function answers(Request $repuest, $commentId){
         $data['comment'] = Comment::where('id', $commentId)->first();
         return view('admin.comments.answer', $data);

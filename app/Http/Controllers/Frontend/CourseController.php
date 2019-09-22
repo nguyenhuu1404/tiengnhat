@@ -17,6 +17,7 @@ use App\Ad;
 
 class CourseController extends Controller
 {
+    const ROLE_ADMIN = 1;
     public function index($courseId){
 
         $course = Course::where(['id'=> $courseId])->get()->first()->toArray();
@@ -41,6 +42,10 @@ class CourseController extends Controller
         return view('frontend.courses.index', $data);
     }
     public function checkPayment($userId, $courseId){
+        $user = Auth::user();
+        if ($user->role_id === self::ROLE_ADMIN) {
+            return true;
+        }
         $checkPayment = Payment::where(['user_id' => $userId, 'course_id' =>  $courseId, 'status' => 1])->get()->count();
         if($checkPayment > 0){
             return true;

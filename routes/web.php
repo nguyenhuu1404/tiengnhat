@@ -16,8 +16,6 @@ Route::group(['prefix' => 'admin'], function () {
     Route::namespace('Voyager')->group(function () {
         Route::get('baocao', 'ReportController@index')->middleware('admin.user')->name('report.index');
         Route::get('questions/{id}/answers', 'QuestionController@answers')->middleware('admin.user')->name('question.answer');
-        Route::get('comments/{id}/answers', 'CommentController@answers')->middleware('admin.user')->name('comment.answer');
-        Route::get('comments', 'CommentController@index')->middleware('admin.user')->name('comment.index');
     });
 });
 
@@ -38,8 +36,8 @@ Route::group(['as' => 'frontend.', 'namespace' => 'Frontend'], function() {
         Route::get('/khoa-hoc/combo', 'PackageController@coursecombo');
         Route::get('/khoa-hoc-cua-toi', 'PackageController@myPackage');
         Route::get('/khoa-hoc/package/{id}-{slug}', 'PackageController@combo')->where(['id' => '[0-9]+']);
-        Route::get('/khoa-hoc/{id}-{slug}', 'CourseController@index')->where(['id' => '[0-9]+']);
-        Route::get('/khoa-hoc/{course}/{courseId}-{id}-{slug}', 'LessonController@index')->where(['id' => '[0-9]+', 'courseId' => '[0-9]+']);
+        Route::get('/khoa-hoc/{id}-{slug}', 'CourseController@index')->where(['id' => '[0-9]+'])->name('course.detail');
+        Route::get('/khoa-hoc/{course}/{courseId}-{id}-{slug}', 'LessonController@index')->where(['id' => '[0-9]+', 'courseId' => '[0-9]+'])->name('lesson.detail');
 
         Route::get('/thanh-toan/{id}-{slug}', 'PaymentController@course')->where(['id' => '[0-9]+']);
         Route::post('/payment/paymentCourse', 'PaymentController@paymentCourse');

@@ -16,6 +16,7 @@ use App\Ad;
 
 class LessonController extends Controller
 {
+    const ROLE_ADMIN = 1;
     public function index($course, $courseId, $lessonId){
         $lessons = Course::find($courseId)->lessons()->orderBy('order', 'asc')->get()->toArray();
         $course = Course::where('id', $courseId)->get()->first()->toArray();
@@ -30,7 +31,7 @@ class LessonController extends Controller
         $data['ads'] = Ad::where('status', 1)->where('page', 'lesson')->orderBy('id', 'desc')->get();
         $data['title'] = $curentLesson['name'];
         $data['description'] = $curentLesson['description'];
-        $comment = Comment::where(['lesson_id' => $lessonId, 'status' => 1])->orderBy('created_at', 'desc')->get()->toArray();
+        $comment = Comment::where(['lesson_id' => $lessonId, 'status' => 1])->get()->toArray();
         $data['comments'] = buildTree($comment);
         if($curentLesson['trial'] == 1){
             $data['isBuy'] = false;
@@ -63,7 +64,10 @@ class LessonController extends Controller
 
     }
     public function checkPayment($userId, $courseId){
-
+        $user = Auth::user();
+        if ($user->role_id === self::ROLE_ADMIN) {
+            return true;
+        }
         $checkPayment = Payment::where(['user_id' => $userId, 'course_id' =>  $courseId, 'status' => 1])->get()->count();
         if($checkPayment > 0){
             return true;
@@ -89,6 +93,10 @@ class LessonController extends Controller
         }
     }
     public function checkUser($userId, $courseId){
+        $user = Auth::user();
+        if ($user->role_id === self::ROLE_ADMIN) {
+            return true;
+        }
         $dateNow = date('Y-m-d');
         $checkUser = Payment::where(['user_id' => $userId, 'course_id' =>  $courseId, 'status' => 1])->where('end_date', '>=', $dateNow)->get()->count();
         if($checkUser > 0){
